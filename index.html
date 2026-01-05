@@ -46,51 +46,26 @@
       box-shadow:0 0 0 2px #111, 0 0 28px rgba(255,215,0,0.12);
     }
 
-    /* ===== header ===== */
-    .site-header{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      padding:10px;
-      border:1px solid var(--line);
-      background:
-        linear-gradient(180deg, rgba(255,60,255,0.16), transparent 55%),
-        linear-gradient(90deg, rgba(0,255,255,0.12), transparent 40%),
-        linear-gradient(180deg, #101010, #050505);
-      margin-bottom:10px;
-    }
-    .site-icon{
-      width:60px;height:60px;
-      border:2px solid var(--cyan);
-      background:#000;
-      box-shadow:0 0 0 2px #001a1a, 0 0 18px rgba(0,255,255,0.22);
-      flex:0 0 auto;
-      object-fit:cover;
-    }
-    .site-title{
-      flex:1;
-      min-width:0;
-    }
-    .site-title h1{
-      font-size:clamp(20px, 6vw, 34px);
-      font-weight:900;
-      letter-spacing:2px;
-      color:var(--gold);
-      text-shadow:2px 2px 0 #7a5200, 0 0 12px rgba(255,215,0,0.55);
-      word-break:keep-all;
-    }
-    .site-title .subtitle{
-      font-size:11px;
-      color:#bff;
-      letter-spacing:1px;
-      margin-top:2px;
-    }
-    .site-title .line{
-      margin-top:4px;
-      font-size:10px;
-      color:#888;
-      line-height:1.4;
-    }
+  /* ===== header ===== */
+.site-header{
+  padding:10px;
+  border:1px solid var(--line);
+  background:linear-gradient(180deg, #101010, #050505);
+  margin-bottom:10px;
+  text-align:center;
+}
+.site-banner{
+  width:100%;
+  max-width:400px;
+  height:auto;
+  display:block;
+  margin:0 auto;
+}
+.header-info{
+  margin-top:8px;
+  font-size:10px;
+  color:#888;
+}
 
     /* ===== marquee ===== */
     .marquee-area{
@@ -701,15 +676,12 @@
   <div class="container">
 
 ```
-<!-- HEADER (icon + title) -->
+<!-- HEADER -->
 <div class="site-header">
-  <img class="site-icon" src="ICON_URL_HERE" alt="貯金道場 icon">
-  <div class="site-title">
-    <h1>貯金道場</h1>
-    <div class="subtitle">- SAVE MONEY DOJO -</div>
-    <div class="line">最終更新：<span id="updateDate">2025/01/06</span> ｜ 今日格言：還債是現金流的止血，不是自虐</div>
-  </div>
+  <img class="site-banner" src="logo.png" alt="貯金道場">
+  <div class="header-info">｜ 今日格言：金は命より重い⋯!</div>
 </div>
+
 
 <!-- Marquee -->
 <div class="marquee-area">
@@ -1176,3 +1148,4 @@
 
 </body>
 </html>
+
