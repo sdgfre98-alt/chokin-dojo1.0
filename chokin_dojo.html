@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="貯金道場">
+  <title>貯金道場 -SAVE MONEY DOJO-</title>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#000;
+      --panel:#070707;
+      --panel2:#0b0b0b;
+      --line:#2a2a2a;
+      --cyan:#00ffff;
+      --mag:#ff3cff;
+      --gold:#ffd700;
+      --lime:#00ff66;
+      --txt:#eaeaea;
+      --muted:#9a9a9a;
+      --bad:#ff6666;
+    }
+
+    body{
+      background:var(--bg);
+      color:var(--txt);
+      font-family:"MS PGothic","ＭＳ Ｐゴシック",Osaka,Verdana,Arial,sans-serif;
+      line-height:1.55;
+      background-image:
+        radial-gradient(circle at 1px 1px, #101010 1px, transparent 0),
+        radial-gradient(circle at 8px 6px, #080808 1px, transparent 0);
+      background-size: 12px 12px;
+      min-height:100vh;
+    }
+
+    .container{
+      max-width:760px;
+      margin:14px auto 28px auto;
+      padding:10px;
+      border:3px double var(--gold);
+      background:rgba(0,0,0,0.82);
+      box-shadow:0 0 0 2px #111, 0 0 28px rgba(255,215,0,0.12);
+    }
+
+    /* ===== header ===== */
+    .site-header{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding:12px;
+      border:1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255,60,255,0.16), transparent 55%),
+        linear-gradient(90deg, rgba(0,255,255,0.12), transparent 40%),
+        linear-gradient(180deg, #101010, #050505);
+      margin-bottom:10px;
+    }
+    .site-icon{
+      width:80px;height:80px;
+      border:2px solid var(--cyan);
+      background:#000;
+      box-shadow:0 0 0 2px #001a1a, 0 0 18px rgba(0,255,255,0.22);
+      flex:0 0 auto;
+      object-fit:cover;
+    }
+    .site-title h1{
+      font-size:34px;
+      font-weight:900;
+      letter-spacing:5px;
+      color:var(--gold);
+      text-shadow:2px 2px 0 #7a5200, 0 0 12px rgba(255,215,0,0.55);
+    }
+    .site-title .subtitle{
+      font-size:12px;
+      color:#bff;
+      letter-spacing:2px;
+      margin-top:2px;
+    }
+    .site-title .line{
+      margin-top:6px;
+      font-size:11px;
+      color:#888;
+    }
+
+    /* ===== marquee ===== */
+    .marquee-area{
+      background:var(--panel2);
+      border:1px solid #3a3a3a;
+      padding:6px 8px;
+      margin:10px 0 12px 0;
+      overflow:hidden;
+      position:relative;
+    }
+    .marquee-area::before{
+      content:"UPDATE";
+      position:absolute;
+      top:-9px;
+      left:10px;
+      font-size:10px;
+      padding:1px 6px;
+      border:1px solid var(--mag);
+      color:var(--mag);
+      background:#000;
+    }
+    .marquee-inner{
+      display:inline-block;
+      white-space:nowrap;
+      animation:marquee 18s linear infinite;
+      color:#ff6;
+      font-size:12px;
+    }
+    @keyframes marquee{
+      0%{transform:translateX(100%)}
+      100%{transform:translateX(-100%)}
+    }
+
+    /* ===== info table ===== */
+    .info-table{
+      width:100%;
+      border-collapse:collapse;
+      margin:12px 0;
+      font-size:13px;
+    }
+    .info-table th{
+      background:linear-gradient(180deg,#2a2a2a,#0f0f0f);
+      border:1px solid #555;
+      padding:8px;
+      color:var(--gold);
+      font-weight:bold;
+      text-align:left;
+    }
+    .info-table td{
+      background:#050505;
+      border:1px solid #222;
+      padding:8px;
+    }
+    .info-table .highlight{
+      color:var(--cyan);
+      font-weight:900;
+      font-size:18px;
+      text-shadow:0 0 10px rgba(0,255,255,0.18);
+    }
+    .info-table .good{color:var(--lime)}
+    .info-table .bad{color:var(--bad)}
+    .info-table .gold{color:var(--gold)}
+
+    /* ===== level area ===== */
+    .level-area{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px;
+      background:var(--panel);
+      border:1px solid #333;
+      margin:12px 0;
+    }
+    .level-icon{
+      width:56px;height:56px;
+      background:#0b0b0b;
+      border:2px solid var(--gold);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:13px;
+      color:var(--gold);
+      font-weight:900;
+    }
+    .level-detail{flex:1}
+    .level-detail .lv-num{
+      font-size:26px;
+      font-weight:900;
+      color:#ff8c00;
+      text-shadow:2px 2px 0 #000;
+    }
+    .level-detail .lv-title{
+      font-size:13px;
+      color:var(--gold);
+    }
+
+    .exp-gauge{margin-top:8px}
+    .exp-gauge-label{
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:2px;
+    }
+    .exp-gauge-bar{
+      height:14px;
+      background:#111;
+      border:1px solid #444;
+      position:relative;
+    }
+    .exp-gauge-fill{
+      height:100%;
+      background:linear-gradient(180deg,var(--lime),#009944);
+      transition:width .3s;
+    }
+    .exp-gauge-text{
+      position:absolute;
+      top:0;right:4px;
+      font-size:10px;
+      color:#fff;
+      line-height:14px;
+    }
+
+    /* ===== boss area (less casino) ===== */
+    .boss-area{
+      background:#0d0000;
+      border:2px solid #660000;
+      padding:12px;
+      margin:12px 0;
+      text-align:center;
+    }
+    .boss-title{
+      font-size:14px;
+      font-weight:900;
+      color:#ff7777;
+      text-shadow:0 0 10px rgba(255,0,0,0.22);
+      margin-bottom:8px;
+      letter-spacing:1px;
+    }
+    .boss-hp-row{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+    .boss-icon{
+      font-size:12px;
+      color:#ffaaaa;
+      font-weight:900;
+      border:1px solid #ff6666;
+      padding:2px 6px;
+      background:#220000;
+    }
+    .boss-hp-bar{
+      flex:1;
+      max-width:280px;
+      height:18px;
+      background:#220000;
+      border:1px solid #660000;
+      position:relative;
+    }
+    .boss-hp-fill{
+      height:100%;
+      background:linear-gradient(180deg,#ff8a8a,#cc0000);
+      transition:width .5s;
+    }
+    .boss-hp-text{
+      position:absolute;
+      top:0;left:50%;
+      transform:translateX(-50%);
+      font-size:11px;
+      color:#fff;
+      line-height:18px;
+      text-shadow:1px 1px 0 #000;
+      white-space:nowrap;
+    }
+    .boss-info{
+      font-size:11px;
+      color:#ffaaaa;
+      margin-top:6px;
+    }
+
+    /* ===== menu ===== */
+    .menu-area{
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px;
+      margin:12px 0;
+      padding:8px;
+      background:var(--panel2);
+      border:1px solid #333;
+    }
+    .menu-link{
+      flex:1;
+      min-width:72px;
+      padding:10px 8px;
+      background:linear-gradient(180deg,#1b1b1b,#0d0d0d);
+      border:1px solid #444;
+      color:var(--cyan);
+      text-decoration:none;
+      font-size:13px;
+      text-align:center;
+      cursor:pointer;
+      transition:all .12s;
+      letter-spacing:1px;
+      user-select:none;
+    }
+    .menu-link:hover{
+      background:var(--cyan);
+      color:#000;
+    }
+    .menu-link.active{
+      background:linear-gradient(180deg,rgba(0,255,255,.95),rgba(0,255,255,.55));
+      color:#000;
+      font-weight:900;
+      border-color:var(--cyan);
+    }
+
+    /* ===== panels ===== */
+    .panel{
+      display:none;
+      background:var(--panel);
+      border:1px solid #333;
+      margin:12px 0;
+    }
+    .panel.active{display:block}
+    .panel-header{
+      background:linear-gradient(180deg,#2a2a2a,#0f0f0f);
+      padding:8px 12px;
+      border-bottom:1px solid #444;
+      font-weight:900;
+      color:var(--gold);
+      font-size:13px;
+      position:relative;
+    }
+    .panel-header::after{
+      content:"";
+      position:absolute;
+      left:0;right:0;bottom:-1px;
+      height:1px;
+      background:linear-gradient(90deg,var(--cyan),var(--mag),var(--gold));
+      opacity:.6;
+    }
+    .panel-content{padding:12px}
+
+    /* ===== form ===== */
+    .form-row{margin-bottom:14px}
+    .form-row label{
+      display:block;
+      font-size:12px;
+      color:#b0b0b0;
+      margin-bottom:4px;
+    }
+    .form-row label::before{content:"■ ";color:var(--cyan)}
+    .form-input{
+      width:100%;
+      padding:10px;
+      background:#0b0b0b;
+      border:1px solid #444;
+      color:var(--lime);
+      font-family:inherit;
+      font-size:18px;
+    }
+    .form-input:focus{
+      outline:none;
+      border-color:var(--cyan);
+      background:#001a1a;
+    }
+    .form-input::placeholder{color:#444}
+
+    /* category */
+    .cat-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:6px;
+    }
+    .cat-item{
+      padding:10px 6px;
+      background:linear-gradient(180deg,#1b1b1b,#0d0d0d);
+      border:1px solid #444;
+      color:#9a9a9a;
+      font-size:12px;
+      text-align:center;
+      cursor:pointer;
+      transition:all .12s;
+      user-select:none;
+    }
+    .cat-item:hover{border-color:#777}
+    .cat-item.selected{
+      background:#003333;
+      border-color:var(--cyan);
+      color:var(--cyan);
+    }
+    .cat-item .icon{
+      display:block;
+      font-size:11px;
+      margin-bottom:2px;
+      color:#666;
+    }
+    .cat-item.selected .icon{color:var(--cyan)}
+
+    /* submit */
+    .submit-btn{
+      width:100%;
+      padding:14px;
+      background:linear-gradient(180deg,#001a00,#000a00);
+      border:2px solid var(--lime);
+      color:var(--lime);
+      font-family:inherit;
+      font-size:15px;
+      font-weight:900;
+      cursor:pointer;
+      margin-top:12px;
+      transition:all .12s;
+    }
+    .submit-btn:hover{
+      background:var(--lime);
+      color:#000;
+    }
+    .submit-btn:active{transform:scale(.99)}
+
+    /* week stats */
+    .stars-area{
+      text-align:center;
+      padding:12px;
+      background:var(--panel2);
+      border:1px dashed #444;
+      margin-bottom:12px;
+    }
+    .stars-label{font-size:12px;color:#888;margin-bottom:4px}
+    .stars-display{font-size:28px;letter-spacing:8px}
+    .star-on{color:var(--gold);text-shadow:0 0 10px rgba(255,215,0,.55)}
+    .star-off{color:#333}
+
+    .breakdown-area{
+      background:var(--panel2);
+      border:1px solid #333;
+      padding:10px;
+      margin-top:12px;
+    }
+    .breakdown-title{
+      font-size:12px;
+      color:#aaa;
+      border-bottom:1px dashed #333;
+      padding-bottom:6px;
+      margin-bottom:8px;
+    }
+    .breakdown-row{
+      display:flex;
+      justify-content:space-between;
+      padding:4px 0;
+      font-size:13px;
+    }
+    .breakdown-row .amount{color:var(--bad)}
+
+    /* history */
+    .history-list{max-height:350px;overflow-y:auto}
+    .history-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:8px;
+      border-bottom:1px solid #222;
+      font-size:13px;
+    }
+    .history-item:nth-child(odd){background:#0f0f0f}
+    .history-item .left{display:flex;align-items:center;gap:8px}
+    .history-item .cat-icon{color:#888;font-size:11px}
+    .history-item .desc{color:#ddd}
+    .history-item .date{color:#666;font-size:11px}
+    .history-item .right{display:flex;align-items:center;gap:10px}
+    .history-item .amount{color:var(--bad);font-weight:900}
+    .history-item .del{
+      color:#666;
+      background:none;
+      border:1px solid #444;
+      padding:2px 6px;
+      font-size:10px;
+      cursor:pointer;
+    }
+    .history-item .del:hover{border-color:#f00;color:#f00}
+
+    .empty-msg{text-align:center;padding:40px;color:#444}
+    .empty-msg .big{font-size:24px;margin-bottom:8px}
+
+    /* debt panel */
+    .debt-form{display:flex;gap:8px}
+    .debt-form input{
+      flex:1;
+      padding:10px;
+      background:#0b0b0b;
+      border:1px solid #444;
+      color:var(--mag);
+      font-family:inherit;
+      font-size:16px;
+    }
+    .debt-form input:focus{outline:none;border-color:var(--mag)}
+    .debt-form button{
+      padding:10px 16px;
+      background:linear-gradient(180deg,#240024,#0f0010);
+      border:1px solid var(--mag);
+      color:var(--mag);
+      font-family:inherit;
+      font-size:14px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .debt-form button:hover{background:var(--mag);color:#000}
+
+    .debt-log{
+      margin-top:14px;
+      padding:10px;
+      background:#0c0010;
+      border:1px solid #333;
+    }
+    .debt-log-title{font-size:11px;color:#aaa;margin-bottom:8px}
+    .debt-log-entry{font-size:12px;color:#ffb7ff;padding:3px 0;border-bottom:1px dotted #333}
+
+    /* toast */
+    .toast{
+      position:fixed;
+      bottom:80px;
+      left:50%;
+      transform:translateX(-50%) translateY(20px);
+      background:var(--gold);
+      color:#000;
+      padding:10px 18px;
+      font-weight:900;
+      font-size:14px;
+      opacity:0;
+      transition:all .25s;
+      z-index:1000;
+      border:2px solid #b8860b;
+    }
+    .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+    /* modal */
+    .modal-bg{
+      position:fixed;top:0;left:0;right:0;bottom:0;
+      background:rgba(0,0,0,.9);
+      display:flex;align-items:center;justify-content:center;
+      z-index:1001;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s;
+    }
+    .modal-bg.show{opacity:1;pointer-events:auto}
+    .modal-box{
+      background:#000;
+      border:3px double var(--gold);
+      padding:26px 34px;
+      text-align:center;
+      transform:scale(.94);
+      transition:transform .25s;
+      box-shadow:0 0 18px rgba(255,215,0,.18);
+    }
+    .modal-bg.show .modal-box{transform:scale(1)}
+    .modal-box h2{
+      font-size:18px;
+      color:var(--gold);
+      text-shadow:0 0 18px rgba(255,215,0,.65);
+      margin-bottom:14px;
+      animation:glow-pulse 1s infinite alternate;
+      letter-spacing:2px;
+    }
+    @keyframes glow-pulse{
+      from{text-shadow:0 0 10px rgba(255,215,0,.55)}
+      to{text-shadow:0 0 22px rgba(255,215,0,.8),0 0 34px rgba(255,140,0,.35)}
+    }
+    .modal-box .level-up-num{
+      font-size:54px;
+      font-weight:900;
+      color:var(--cyan);
+      text-shadow:3px 3px 0 #008b8b;
+    }
+    .modal-box .level-up-title{
+      font-size:16px;
+      color:var(--gold);
+      margin-top:8px;
+    }
+    .modal-box button{
+      margin-top:18px;
+      padding:10px 28px;
+      background:#000;
+      border:2px solid var(--cyan);
+      color:var(--cyan);
+      font-family:inherit;
+      font-size:14px;
+      cursor:pointer;
+    }
+    .modal-box button:hover{background:var(--cyan);color:#000}
+
+    /* footer + counter */
+    .site-footer{
+      text-align:center;
+      padding:16px 10px;
+      border-top:1px solid #333;
+      margin-top:18px;
+      font-size:11px;
+      color:#777;
+    }
+    .site-footer .update{color:var(--bad)}
+    .site-footer .copy{margin-top:4px}
+    .blink{animation:blink 1s step-end infinite}
+    @keyframes blink{50%{opacity:0}}
+
+    .counter-area{text-align:center;margin-top:12px;font-size:11px;color:#888}
+    .counter-display{
+      display:inline-block;
+      background:#070707;
+      border:1px solid #333;
+      padding:2px 8px;
+      font-family:monospace;
+      color:var(--lime);
+      letter-spacing:2px;
+    }
+	@media (max-width: 480px){
+  #bossArea { display:none; }
+  .menu-area::before{
+    content:"▼ タップして債務モニター表示";
+    display:block;
+    text-align:center;
+    color:#ff8888;
+    font-size:11px;
+    margin-bottom:6px;
+  }
+}
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- HEADER (icon + title) -->
+    <div class="site-header">
+      <img class="site-icon" src="ICON_URL_HERE" alt="貯金道場 icon">
+      <div class="site-title">
+        <h1>貯金道場</h1>
+        <div class="subtitle">- SAVE MONEY DOJO -</div>
+        <div class="line">最終更新：<span id="updateDate">2025/01/06</span> ｜ 今日格言：還債是現金流的止血，不是自虐</div>
+      </div>
+    </div>
+
+    <!-- Marquee -->
+    <div class="marquee-area">
+      <div class="marquee-inner">
+        ★★★ ようこそ貯金道場へ！ ★★★ 目標：3月末までに負債完済！ ★★★ 記帳するたびに +5 EXP ゲット！ ★★★ 頑張れ！ ★★★
+      </div>
+    </div>
+
+    <!-- Level Area -->
+    <div class="level-area">
+      <div class="level-icon" id="levelIcon">LV.1</div>
+      <div class="level-detail">
+        <div class="lv-num">Lv.<span id="levelNum">1</span></div>
+        <div class="lv-title" id="levelTitle">理財新手</div>
+        <div class="exp-gauge">
+          <div class="exp-gauge-label">EXP</div>
+          <div class="exp-gauge-bar">
+            <div class="exp-gauge-fill" id="expFill" style="width: 0%"></div>
+            <div class="exp-gauge-text" id="expText">0/100</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Table -->
+    <table class="info-table">
+      <tr>
+        <th>本週已花</th>
+        <th>週預算</th>
+        <th>剩餘</th>
+      </tr>
+      <tr>
+        <td><span class="highlight" id="weekSpent">$0</span></td>
+        <td><span class="highlight" style="color:#888;">$1,500</span></td>
+        <td><span class="highlight good" id="weekRemain">$1,500</span></td>
+      </tr>
+    </table>
+
+    <!-- Boss Area -->
+    <div class="boss-area" id="bossArea">
+      <div class="boss-title">負債残高モニター（討伐＝完済）</div>
+      <div class="boss-hp-row">
+        <div class="boss-icon">DEBT</div>
+        <div class="boss-hp-bar">
+          <div class="boss-hp-fill" id="bossHP" style="width: 100%"></div>
+          <div class="boss-hp-text" id="bossHPText">HP 76,000/76,000</div>
+        </div>
+      </div>
+      <div class="boss-info">
+        累計返済: <span id="dmgDealt">$0</span> ｜ 期限: 2025年3月
+      </div>
+    </div>
+
+    <!-- Menu -->
+    <div class="menu-area">
+      <a class="menu-link active" data-tab="input">■ 記帳</a>
+      <a class="menu-link" data-tab="week">■ 週報</a>
+      <a class="menu-link" data-tab="history">■ 履歴</a>
+      <a class="menu-link" data-tab="debt">■ 還債</a>
+    </div>
+
+    <!-- Input Panel -->
+    <div class="panel active" id="inputPanel">
+      <div class="panel-header">◆ 支出を記録する</div>
+      <div class="panel-content">
+        <div class="form-row">
+          <label>金額</label>
+          <input type="number" class="form-input" id="amountInput" placeholder="0" inputmode="numeric">
+        </div>
+        <div class="form-row">
+          <label>メモ</label>
+          <input type="text" class="form-input" id="descInput" placeholder="何を買った？" style="font-size:14px;">
+        </div>
+        <div class="form-row">
+          <label>カテゴリ</label>
+          <div class="cat-grid">
+            <div class="cat-item selected" data-cat="entertainment">
+              <span class="icon">[遊]</span><span>娛樂</span>
+            </div>
+            <div class="cat-item" data-cat="shopping">
+              <span class="icon">[買]</span><span>購物</span>
+            </div>
+            <div class="cat-item" data-cat="food">
+              <span class="icon">[食]</span><span>外食</span>
+            </div>
+            <div class="cat-item" data-cat="other">
+              <span class="icon">[他]</span><span>其他</span>
+            </div>
+          </div>
+        </div>
+        <button class="submit-btn" id="submitBtn">【 記録する 】+5 EXP</button>
+      </div>
+    </div>
+
+    <!-- Week Panel -->
+    <div class="panel" id="weekPanel">
+      <div class="panel-header">◆ 今週のレポート</div>
+      <div class="panel-content">
+        <div class="stars-area">
+          <div class="stars-label">- 評価 -</div>
+          <div class="stars-display" id="starsDisplay">
+            <span class="star-off">★</span><span class="star-off">★</span><span class="star-off">★</span>
+          </div>
+        </div>
+
+        <table class="info-table">
+          <tr><th>支出合計</th><td><span class="highlight bad" id="weekTotalSpent">$0</span></td></tr>
+          <tr><th>残り予算</th><td><span class="highlight good" id="weekTotalRemain">$1,500</span></td></tr>
+          <tr><th>獲得EXP</th><td><span class="highlight" style="color:#0ff;" id="weekTotalExp">+0</span></td></tr>
+          <tr><th>記帳回数</th><td><span class="highlight" id="weekCount">0</span></td></tr>
+        </table>
+
+        <div class="breakdown-area">
+          <div class="breakdown-title">▼ カテゴリ別支出</div>
+          <div id="categoryBreakdown">
+            <div style="color:#444;text-align:center;padding:10px;">データなし</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- History Panel -->
+    <div class="panel" id="historyPanel">
+      <div class="panel-header">◆ 支出履歴</div>
+      <div class="panel-content" style="padding:0;">
+        <div class="history-list" id="historyList">
+          <div class="empty-msg">
+            <div class="big">- NO DATA -</div>
+            <div>まだ記録がありません</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Debt Panel -->
+    <div class="panel" id="debtPanel">
+      <div class="panel-header">◆ 返済を記録する</div>
+      <div class="panel-content">
+        <p style="font-size:13px;color:#aaa;margin-bottom:12px;">返済するたびに残高が減る。数字が現実。</p>
+        <div class="debt-form">
+          <input type="number" id="debtInput" placeholder="返済額" inputmode="numeric">
+          <button id="debtBtn">確定</button>
+        </div>
+        <div class="debt-log">
+          <div class="debt-log-title">▼ 返済ログ</div>
+          <div id="debtHistory">まだ記録していない...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="site-footer">
+      <div class="update">最終更新日：<span id="updateDateFooter">2025/01/06</span></div>
+      <div class="copy">━━ 貯金道場 ━━</div>
+      <div style="margin-top:8px;">
+        <span class="blink">◆</span> ARROW ARROW ARROW <span class="blink">◆</span>
+      </div>
+    </div>
+
+    <div class="counter-area">
+      あなたは <span class="counter-display" id="visitorCount">000001</span> 人目の訪問者です
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Modal -->
+  <div class="modal-bg" id="modal">
+    <div class="modal-box">
+      <h2>★ LEVEL UP ★</h2>
+      <div class="level-up-num">Lv.<span id="modalLevel">2</span></div>
+      <div class="level-up-title" id="modalTitle">記帳小白</div>
+      <button onclick="closeModal()">[ OK ]</button>
+    </div>
+  </div>
+
+  <script>
+    const LEVEL_DATA = {
+      1:'理財新手',2:'記帳小白',3:'省錢學徒',5:'精打細算者',8:'金錢管理師',10:'財務達人',
+      15:'存錢高手',20:'理財專家',25:'金庫守護者',30:'財富建築師',40:'經濟掌控者',
+      50:'傳奇理財王',75:'財神降臨',99:'金融之神'
+    };
+
+    const CAT_INFO = {
+      entertainment:{ icon:'[遊]', name:'娛樂' },
+      shopping:{ icon:'[買]', name:'購物' },
+      food:{ icon:'[食]', name:'外食' },
+      other:{ icon:'[他]', name:'其他' }
+    };
+
+    let state = {
+      level:1,
+      exp:0,
+      totalPaid:0,
+      expenses:[],
+      debtPayments:[],
+      weeklyBudget:1500,
+      totalDebt:76000,
+      visitorCount:0
+    };
+
+    function init(){
+      loadState();
+      state.visitorCount++;
+      saveState();
+      updateUI();
+      bindEvents();
+
+      const today = new Date().toLocaleDateString('zh-TW').replace(/\//g,'/');
+      const u1 = document.getElementById('updateDate');
+      const u2 = document.getElementById('updateDateFooter');
+      if (u1) u1.textContent = today;
+      if (u2) u2.textContent = today;
+    }
+
+    function loadState(){
+      const saved = localStorage.getItem('chokindojo_v1');
+      if (saved) state = JSON.parse(saved);
+    }
+    function saveState(){
+      localStorage.setItem('chokindojo_v1', JSON.stringify(state));
+    }
+
+    function expForLevel(lv){
+      return Math.floor(100 * Math.pow(1.2, lv - 1));
+    }
+    function getTitleForLevel(lv){
+      let title='理財新手';
+      for (const [lvl,t] of Object.entries(LEVEL_DATA)){
+        if (lv >= parseInt(lvl)) title=t;
+      }
+      return title;
+    }
+
+    function getWeekExpenses(){
+      const now = new Date();
+      const start = new Date(now);
+      start.setDate(now.getDate() - now.getDay());
+      start.setHours(0,0,0,0);
+      return state.expenses.filter(e => new Date(e.date) >= start);
+    }
+
+    function calcWeekStats(){
+      const week = getWeekExpenses();
+      const total = week.reduce((s,e)=>s+e.amount,0);
+      const remain = state.weeklyBudget - total;
+
+      let stars=0, exp=0;
+      if (total <= state.weeklyBudget*0.8){ stars=3; exp=50; }
+      else if (total <= state.weeklyBudget){ stars=2; exp=30; }
+      else if (total <= state.weeklyBudget*1.27){ stars=1; exp=10; }
+
+      return { total, remain, stars, exp, count:week.length };
+    }
+
+    function updateUI(){
+      document.getElementById('levelNum').textContent = state.level;
+      document.getElementById('levelIcon').textContent = `LV.${state.level}`;
+      document.getElementById('levelTitle').textContent = getTitleForLevel(state.level);
+
+      const expNeeded = expForLevel(state.level);
+      const pct = Math.min((state.exp / expNeeded) * 100, 100);
+      document.getElementById('expFill').style.width = `${pct}%`;
+      document.getElementById('expText').textContent = `${state.exp}/${expNeeded}`;
+
+      const ws = calcWeekStats();
+      document.getElementById('weekSpent').textContent = `$${ws.total.toLocaleString()}`;
+      const remainEl = document.getElementById('weekRemain');
+      remainEl.textContent = `$${ws.remain.toLocaleString()}`;
+      remainEl.className = ws.remain >= 0 ? 'highlight good' : 'highlight bad';
+
+      const bossHP = state.totalDebt - state.totalPaid;
+      const bossPct = (bossHP / state.totalDebt) * 100;
+      document.getElementById('bossHP').style.width = `${bossPct}%`;
+      document.getElementById('bossHPText').textContent = `HP ${bossHP.toLocaleString()}/${state.totalDebt.toLocaleString()}`;
+      document.getElementById('dmgDealt').textContent = `$${state.totalPaid.toLocaleString()}`;
+
+      document.getElementById('weekTotalSpent').textContent = `$${ws.total.toLocaleString()}`;
+      const weekRemainEl = document.getElementById('weekTotalRemain');
+      weekRemainEl.textContent = `$${ws.remain.toLocaleString()}`;
+      weekRemainEl.className = ws.remain >= 0 ? 'highlight good' : 'highlight bad';
+      document.getElementById('weekTotalExp').textContent = `+${ws.exp}`;
+      document.getElementById('weekCount').textContent = ws.count;
+
+      const starsHTML = Array(3).fill(0).map((_,i)=>
+        `<span class="${i < ws.stars ? 'star-on' : 'star-off'}">★</span>`
+      ).join('');
+      document.getElementById('starsDisplay').innerHTML = starsHTML;
+
+      const week = getWeekExpenses();
+      const catTotals = {};
+      week.forEach(e => catTotals[e.category] = (catTotals[e.category] || 0) + e.amount);
+
+      const catHTML = Object.entries(catTotals).map(([cat,total]) => `
+        <div class="breakdown-row">
+          <span>${CAT_INFO[cat].icon} ${CAT_INFO[cat].name}</span>
+          <span class="amount">-$${total.toLocaleString()}</span>
+        </div>
+      `).join('') || '<div style="color:#444;text-align:center;padding:10px;">本週零支出！</div>';
+      document.getElementById('categoryBreakdown').innerHTML = catHTML;
+
+      document.getElementById('visitorCount').textContent = state.visitorCount.toString().padStart(6,'0');
+
+      updateHistory();
+      updateDebtHistory();
+    }
+
+    function updateHistory(){
+      const list = document.getElementById('historyList');
+      if (state.expenses.length === 0){
+        list.innerHTML = `
+          <div class="empty-msg">
+            <div class="big">- NO DATA -</div>
+            <div>まだ記録がありません</div>
+          </div>
+        `;
+        return;
+      }
+
+      const sorted = [...state.expenses].sort((a,b)=>new Date(b.date)-new Date(a.date));
+      list.innerHTML = sorted.map((e) => {
+        const d = new Date(e.date);
+        const dateStr = `${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+        const idx = state.expenses.indexOf(e);
+        return `
+          <div class="history-item">
+            <div class="left">
+              <span class="cat-icon">${CAT_INFO[e.category].icon}</span>
+              <div>
+                <div class="desc">${e.desc || CAT_INFO[e.category].name}</div>
+                <div class="date">${dateStr}</div>
+              </div>
+            </div>
+            <div class="right">
+              <span class="amount">-$${e.amount.toLocaleString()}</span>
+              <button class="del" onclick="deleteExpense(${idx})">DEL</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateDebtHistory(){
+      const el = document.getElementById('debtHistory');
+      if (state.debtPayments.length === 0){
+        el.innerHTML = 'まだ記録していない...';
+        return;
+      }
+      el.innerHTML = state.debtPayments.slice(-5).reverse().map(p => {
+        const d = new Date(p.date);
+        return `<div class="debt-log-entry">${d.getMonth()+1}/${d.getDate()} - $${p.amount.toLocaleString()}</div>`;
+      }).join('');
+    }
+
+    function addExp(amount){
+      state.exp += amount;
+      let leveledUp=false;
+      let expNeeded = expForLevel(state.level);
+
+      while (state.exp >= expNeeded && state.level < 99){
+        state.exp -= expNeeded;
+        state.level++;
+        leveledUp=true;
+        expNeeded = expForLevel(state.level);
+      }
+
+      if (leveledUp) showLevelUp();
+      saveState();
+    }
+
+    function showToast(msg){
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(()=>t.classList.remove('show'), 2000);
+    }
+
+    function showLevelUp(){
+      document.getElementById('modalLevel').textContent = state.level;
+      document.getElementById('modalTitle').textContent = getTitleForLevel(state.level);
+      document.getElementById('modal').classList.add('show');
+    }
+    function closeModal(){ document.getElementById('modal').classList.remove('show'); }
+
+    function deleteExpense(idx){
+      if (confirm('この記録を削除しますか？')){
+        state.expenses.splice(idx,1);
+        saveState();
+        updateUI();
+        showToast('削除しました');
+      }
+    }
+
+    function bindEvents(){
+      document.querySelectorAll('.menu-link').forEach(link => {
+        link.addEventListener('click', () => {
+          document.querySelectorAll('.menu-link').forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+          const tab = link.dataset.tab;
+          document.getElementById('inputPanel').classList.toggle('active', tab === 'input');
+          document.getElementById('weekPanel').classList.toggle('active', tab === 'week');
+          document.getElementById('historyPanel').classList.toggle('active', tab === 'history');
+          document.getElementById('debtPanel').classList.toggle('active', tab === 'debt');
+        });
+      });
+
+      document.querySelectorAll('.cat-item').forEach(item => {
+        item.addEventListener('click', () => {
+          document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('selected'));
+          item.classList.add('selected');
+        });
+      });
+
+      document.getElementById('submitBtn').addEventListener('click', () => {
+        const amount = parseInt(document.getElementById('amountInput').value);
+        const desc = document.getElementById('descInput').value;
+        const cat = document.querySelector('.cat-item.selected').dataset.cat;
+
+        if (!amount || amount <= 0){
+          showToast('金額を入力してください');
+          return;
+        }
+
+        state.expenses.push({ amount, desc, category: cat, date: new Date().toISOString() });
+        addExp(5);
+        saveState();
+        updateUI();
+
+        document.getElementById('amountInput').value = '';
+        document.getElementById('descInput').value = '';
+        showToast('記録完了！ +5 EXP');
+      });
+
+      document.getElementById('debtBtn').addEventListener('click', () => {
+        const amount = parseInt(document.getElementById('debtInput').value);
+        if (!amount || amount <= 0){
+          showToast('金額を入力してください');
+          return;
+        }
+
+        state.totalPaid += amount;
+        state.debtPayments.push({ amount, date: new Date().toISOString() });
+        addExp(Math.floor(amount / 100));
+        saveState();
+        updateUI();
+
+        document.getElementById('debtInput').value = '';
+
+        if (state.totalPaid >= state.totalDebt){
+          showToast('完済！！！');
+        } else {
+          showToast(`返済 $${amount.toLocaleString()}`);
+        }
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>
